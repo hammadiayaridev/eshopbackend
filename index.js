@@ -379,3 +379,40 @@ app.delete("/supprimermessage/:_id", async (request, response) => {
     response.status(500).json({ message: error.message });
   }
 });
+
+//Gestion commandes
+const CommandeSchema = new mongoose.Schema({
+    _id: {type:String, required:false},
+    datacmd: {type:String, required:true},
+});
+CommandeSchema.set('versionKey', false);
+//user : c'est le nom du model
+const commande = mongoose.model('commandesLaCollection', CommandeSchema, 'commandesLaCollection');
+
+//Récupérer toutes les commandes
+
+app.get("/findallcmds", async (request, response) => {
+    //commande : c'est le nom du model
+      const cmds = await commande.find({});
+      //console.log(cmds);
+      try {
+        response.status(200).json(cmds);
+      } catch (error) {
+        //console.log(error.message);
+        response.status(500).json({ message: error.message });
+      }
+    });
+
+//Ajouter une commande
+
+app.post("/ajoutercmd", async (request, response) => {
+    const cmd = new commande(request.body);
+    try {
+      //console.log(request.body);
+      await cmd.save();
+      response.status(200).send();
+    } catch (error) {
+      response.status(500).send(error);
+      //console.log("COMMANDE: "+cmd);
+    }
+  });
