@@ -43,6 +43,7 @@ const ProductSchema = new mongoose.Schema({
   percsales: {type:Number,},
   taille: {type:String,},
   pointure: {type:Number,},
+  qtevendu: {type:Number,},
   ref: {type:String, required:true},
 });
 ProductSchema.set('versionKey', false);
@@ -101,6 +102,7 @@ app.patch("/updateprod", async (request, response) => {
     percsales: request.body.percsales,
     taille: request.body.taille,
     pointure: request.body.pointure,
+    qtevendu: request.body.qtevendu,
     ref: request.body.ref,
   };
     //console.log(request.body._id);
