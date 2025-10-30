@@ -184,9 +184,9 @@ app.post("/ajouter", async (request, response) => {
     const message = req.body.message;
     //console.log(req.body);
     const mail = {
-      from: "Boutique LA COLLECTION",
+      from: "Boutique ESHOP",
       to: "hamadi.ay@gmail.com",
-      subject: "Contact Boutique Form LA COLLECTION: Code de confirmation d'inscription",
+      subject: "ESHOP contact Form: Code de confirmation d'inscription",
       html: `
               <p>Message: ${message}</p>
           `,
@@ -204,9 +204,9 @@ app.post("/ajouter", async (request, response) => {
     const email = req.body.email;
     const message = req.body.message;
     const mail = {
-      from: "Boutique LA COLLECTION",
+      from: "Boutique ESHOP",
       to: "hamadi.ay@gmail.com",
-      subject: "Contact Boutique Form LA COLLECTION: Code de validation récupération compte",
+      subject: "ESHOP contact Form: Code de validation récupération compte",
       html: `
               <p>Email: ${email}</p>
               <p>Message: ${message}</p>
@@ -227,8 +227,8 @@ app.post("/ajouter", async (request, response) => {
     const message = req.body.message;
     //console.log(req);
     const mail = {
-      from: "Boutique LA COLLECTION",
-      to: "hamadi.ay@gmail.com",
+      from: "ESHOP",
+      to: req.body.email,
       subject: req.body.objet,
       html: `
               <p>Email: ${email}</p>
@@ -418,3 +418,31 @@ app.post("/ajoutercmd", async (request, response) => {
       //console.log("COMMANDE: "+cmd);
     }
   });
+
+  //Supprimer une commande
+app.delete("/supprimercommande/:_id", async (request, response) => {
+  //modmessage : c'est le nom du model
+   await commande.findByIdAndDelete(request.params._id);
+  try {
+    response.status(200).send();
+  } catch (error) {
+    console.log(error.message);
+    response.status(500).json({ message: error.message });
+  }
+});
+
+//Mise à jour Commande 
+app.patch("/updatecommande", async (request, response) => {
+const newcmd ={
+  datacmd: request.body.datacmd,
+};
+  //console.log(request.body._id);
+  //console.log(newcmd);
+  try {
+    //admin : c'est le nom du model
+    await commande.findByIdAndUpdate(request.body._id, newcmd);
+    response.status(200).send(newcmd);
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
